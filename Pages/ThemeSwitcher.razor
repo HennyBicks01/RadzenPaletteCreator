@@ -1,0 +1,21 @@
+﻿@inject IJSRuntime JSRuntime
+
+<RadzenDropDown @bind-Value="currentTheme" Data="themes" TextProperty="Text" ValueProperty="Value" Change="@(args => ChangeTheme(args))" Style="width: 200px" />
+
+@code {
+    private string currentTheme = "css/fluent-dark.css";
+    private List<KeyValuePair<string, string>> themes = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Fluent Dark", "css/radzenCss/fluent-dark.css"),
+        new KeyValuePair<string, string>("Dark", "css/radzenCss/dark.css"),
+
+
+        // Add more themes as needed
+    };
+
+    private async Task ChangeTheme(object value)
+    {
+        currentTheme = value.ToString();
+        await JSRuntime.InvokeVoidAsync("changeTheme", currentTheme);
+    }
+}

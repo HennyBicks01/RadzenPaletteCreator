@@ -1,13 +1,71 @@
-﻿@using Radzen
+﻿@page "/"
+
+@using Radzen
 @using Radzen.Blazor
+@using RadzenPaletteMaker.Models
+@inject IJSRuntime JSRuntime
 
-@page "/"
-
-
-<RadzenText TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
-    Radzen Demo Form
+<RadzenText Style="padding-left: 30px" TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
+    Radzen Palette Demo
 </RadzenText>
-<RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.P" class="rz-pb-4">
-    Demonstration and configuration of the Radzen Blazor <strong>TemplateForm</strong> component.
-</RadzenText>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; padding-left: 30px;">
+    <div style="margin-right: 20px;">
+        <RadzenText Text="Base" Style="margin-bottom: 5px;" />
+        <RadzenColorPicker @bind-Value="baseColorTheme.Base500" ShowHSV="true" ShowRGBA="true" Change="ApplyBaseColorChanges" />
+    </div>
+    @foreach (var key in themeColors.Keys)
+    {
+        <div style="margin-right: 20px;">
+            <RadzenText Text="@themeColors[key].Description" Style="margin-bottom: 5px;" />
+            <RadzenColorPicker @bind-Value="@themeColors[key].BaseColor" ShowHSV="true" ShowRGBA="true" Change="() => UpdateColors(key)" />
+        </div>
+    }
+</div>
+
 <TemplateFormConfig />
+
+@code {
+    BaseColorTheme baseColorTheme = new BaseColorTheme { Base500 = "#9e9e9e" };
+
+    Dictionary<string, ThemeColor> themeColors = new Dictionary<string, ThemeColor>
+    {
+        { "primary", new ThemeColor { BaseColor = "#4340D2", Description = "Primary" } },
+        { "secondary", new ThemeColor { BaseColor = "#e91e63", Description = "Secondary" } },
+        { "info", new ThemeColor { BaseColor = "#2196f3", Description = "Info" } },
+        { "success", new ThemeColor { BaseColor = "#4caf50", Description = "Success" } },
+        { "warning", new ThemeColor { BaseColor = "#ff9800", Description = "Warning" } },
+        { "danger", new ThemeColor { BaseColor = "#f44336", Description = "Danger" } }
+    };
+
+    void ApplyBaseColorChanges()
+    {
+        baseColorTheme.ComputeShades();
+        foreach (var shade in baseColorTheme.Shades)
+        {
+            JSRuntime.InvokeVoidAsync("updateCssVariable", shade.Key, shade.Value);
+        }
+    }
+
+    void UpdateColors(string key)
+    {
+        var baseColor = themeColors[key].BaseColor;
+        UpdateColorSet(key, baseColor);
+    }
+
+    void UpdateColorSet(string baseKey, string baseColor)
+    {
+        var cssBaseKey = $"--rz-{baseKey}";
+        var light = ColorHelper.LightenColor(baseColor, 0.3);
+        var lighter = ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f);
+        var dark = ColorHelper.DarkenColor(baseColor, 0.2);
+        var darker = ColorHelper.DarkenColor(baseColor, 0.4);
+
+        JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey, baseColor);
+        JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-light", light);
+        JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-lighter", lighter);
+        JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-dark", dark);
+        JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-darker", darker);
+        JSRuntime.InvokeVoidAsync("updateCssVariable", "--rz-on-" + baseKey + "-lighter", baseColor);
+    }
+}
