@@ -5,11 +5,13 @@
 
 <RadzenText Text="Choose theme:" />
 <RadzenDropDown Data="@themes" TextProperty="Name" ValueProperty="StylePath"
-                Value="themes[0].StylePath" 
+                Value="@currentThemePath" 
                 Change="@(args => OnChangeTheme((string)args))" Style="width: auto;" TValue="string" />
 
 
 @code {
+    private string currentThemePath = "css/radzenCss/default.css";
+
     private List<ThemeOption> themes = new List<ThemeOption>
     {
         new ThemeOption { Name = "Default", StylePath = "css/radzenCss/default.css" },

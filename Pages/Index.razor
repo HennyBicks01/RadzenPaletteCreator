@@ -5,34 +5,111 @@
 @using RadzenPaletteMaker.Models
 @inject IJSRuntime JSRuntime
 
-<div style="display: flex; align-items: center; justify-content: space-between;">
-    <RadzenText Style="padding-left: 30px; flex-grow: 1;" TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
-        Radzen Palette Creator
-    </RadzenText>
 
-    <div style="margin-right: 30px;">
-        <ThemeSwitcher />
-    </div>
-</div>
-
-
-<div style="display: flex; flex-wrap: wrap; align-items: flex-start; padding-left: 30px;">
-    <div style="margin-right: 20px;">
-        <RadzenText Text="Base" Style="margin-bottom: 5px;" />
-        <RadzenColorPicker @bind-Value="baseColorTheme.Base500" ShowHSV="true" ShowRGBA="true" Change="ApplyBaseColorChanges" />
-    </div>
-    @foreach (var key in themeColors.Keys)
-    {
-        <div style="margin-right: 20px;">
-            <RadzenText Text="@themeColors[key].Description" Style="margin-bottom: 5px;" />
-            <RadzenColorPicker @bind-Value="@themeColors[key].BaseColor" ShowHSV="true" ShowRGBA="true" Change="() => UpdateColors(key)" />
+<RadzenHeader Style="@($"position: sticky; background-color: {GetHeaderBackgroundColor()}; box-shadow: 0 4px 8px rgba(0,0,0,0.1);")">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-start; padding: 20px">
+            <div style="margin-right: 20px;">
+                <RadzenText Text="Base" Style="margin-bottom: 5px;" />
+                <RadzenColorPicker @bind-Value="baseColorTheme.Base500" ShowHSV="true" ShowRGBA="true" ShowColors="false" Change="ApplyBaseColorChanges" />
+            </div>
+            @foreach (var key in themeColors.Keys)
+            {
+                <div style="margin-right: 20px;">
+                    <RadzenText Text="@themeColors[key].Description" Style="margin-bottom: 5px;" />
+                    <RadzenColorPicker @bind-Value="@themeColors[key].BaseColor" ShowHSV="true" ShowRGBA="true" Change="() => UpdateColors(key)" />
+                </div>
+            }
         </div>
-    }
-</div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; padding: 20px">
+            <div style="flex-basis: 100%;">
+                <RadzenText Text="Choose theme:" />
+            </div>
+            <div style="flex-grow: 1; display: flex; flex-direction: column;">
+                <RadzenDropDown Data="@themes" TextProperty="Name" ValueProperty="StylePath"
+                                Value="@currentThemePath"
+                                Change="@(args => OnChangeTheme((string)args))" Style="width: auto; margin-left: 10px;" TValue="string" />
+            </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; padding: 20px">
+
+            <div style="flex-basis: 100%;">
+                <RadzenText Text="Download" />
+            </div>
+            <div style="flex-grow: 1; display: flex; flex-direction: column;">
+                <RadzenButton Text="CSS" Click="@DownloadModifiedCSS" />
+            </div>
+            <div style="flex-grow: 1; display: flex; flex-direction: column;">
+
+                <RadzenButton Text="Override" Click="@DownloadCSS" />
+            </div>
+            
+        </div>
+
+    </div>
+
+</RadzenHeader>
+
+<RadzenText Style="padding-left: 30px; flex-grow: 1;" TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
+    Radzen Palette Creator
+</RadzenText>
+
 
 <TemplateFormConfig />
 
 @code {
+    private string currentThemePath = "css/radzenCss/default.css";
+
+    private bool firstRender = true;
+
+    private string GetHeaderBackgroundColor()
+    {
+        return baseColorTheme.Base500;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ApplyInitialColorSettings();
+            this.firstRender = false; // Ensure this initialization runs only once
+        }
+    }
+
+    private void ApplyInitialColorSettings()
+    {
+        // Update each color based on the initial theme or any default settings
+        ApplyBaseColorChanges();
+        foreach (var colorKey in themeColors.Keys)
+        {
+            var colorValue = themeColors[colorKey].BaseColor;
+            UpdateColorSet(colorKey, colorValue); // Assume this method updates the UI
+        }
+        StateHasChanged(); // This ensures the component re-renders with updated state
+    }
+
+    private List<ThemeOption> themes = new List<ThemeOption>
+    {
+        new ThemeOption { Name = "Default", StylePath = "css/radzenCss/default.css" },
+        new ThemeOption { Name = "Dark", StylePath = "css/radzenCss/dark.css" },
+        new ThemeOption { Name = "Fluent", StylePath = "css/radzenCss/fluent.css" },
+        new ThemeOption { Name = "Fluent Dark", StylePath = "css/radzenCss/fluent-dark.css" },
+        new ThemeOption { Name = "Humanistic", StylePath = "css/radzenCss/humanistic.css" },
+        new ThemeOption { Name = "Material", StylePath = "css/radzenCss/material.css" },
+        new ThemeOption { Name = "Material Dark", StylePath = "css/radzenCss/material-dark.css" },
+        new ThemeOption { Name = "Material3", StylePath = "css/radzenCss/material3.css" },
+        new ThemeOption { Name = "Material3 Dark", StylePath = "css/radzenCss/material3-dark.css" },
+        new ThemeOption { Name = "Software", StylePath = "css/radzenCss/software.css" },
+        new ThemeOption { Name = "Standard", StylePath = "css/radzenCss/standard.css" },
+        // Add more themes as needed
+    };
+
+    private async Task OnChangeTheme(string value)
+    {
+        await JSRuntime.InvokeVoidAsync("changeTheme", value);
+    }
+
     BaseColorTheme baseColorTheme = new BaseColorTheme { Base500 = "#9e9e9e" };
 
     Dictionary<string, ThemeColor> themeColors = new Dictionary<string, ThemeColor>
@@ -74,5 +151,46 @@
         JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-dark", dark);
         JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-darker", darker);
         //JSRuntime.InvokeVoidAsync("updateCssVariable", "--rz-on-" + baseKey + "-lighter", baseColor);
+    }
+
+    void DownloadCSS()
+    {
+        string cssContent = GenerateCSS();
+        JSRuntime.InvokeVoidAsync("downloadFile", "theme.css", cssContent);
+    }
+
+    string GenerateCSS()
+    {
+        // This method returns a string containing the CSS rules generated from your color settings
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(":root {");
+
+        // Adding base color shades
+        foreach (var shade in baseColorTheme.Shades)
+        {
+            sb.AppendLine($"    --rz-base-{shade.Key.ToLower()}: {shade.Value};");
+        }
+
+        // Adding specific theme colors with shades
+        foreach (var color in themeColors)
+        {
+            var baseKey = color.Key;
+            var baseColor = color.Value.BaseColor;
+            sb.AppendLine($"    --rz-{baseKey}: {baseColor};");
+            sb.AppendLine($"    --rz-{baseKey}-light: {ColorHelper.LightenColor(baseColor, 0.3)};");
+            sb.AppendLine($"    --rz-{baseKey}-lighter: {ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f)};");
+            sb.AppendLine($"    --rz-{baseKey}-dark: {ColorHelper.DarkenColor(baseColor, 0.2)};");
+            sb.AppendLine($"    --rz-{baseKey}-darker: {ColorHelper.DarkenColor(baseColor, 0.4)};");
+        }
+
+        sb.AppendLine("}");
+        return sb.ToString();
+    }
+
+    // Method to download the modified CSS file
+    private async Task DownloadModifiedCSS()
+    {
+        var themeName = themes.FirstOrDefault(t => t.StylePath == currentThemePath)?.Name ?? "default";
+        await JSRuntime.InvokeVoidAsync("fetchAndModifyCSS", currentThemePath, themeColors, themeName);
     }
 }
