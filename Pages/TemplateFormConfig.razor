@@ -1,0 +1,554 @@
+﻿@using RadzenBlazorDemos.Models.Northwind
+@using RadzenPaletteMaker.Pages.Buttons
+@if (order == null)
+{
+    <p><em>Loading...</em></p>
+
+}
+else
+{
+    <RadzenTemplateForm Data="@order" Submit="@((Order args) => { Submit(args); })">
+    <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack>
+            <RadzenFieldset Text="Purchase Info">
+                <RadzenStack  Gap="1rem">
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Credit Card" Component="CardId" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenDropDown @bind-Value="order.CardId" AllowClear="true" Placeholder="Select something" Data="@cards" Style="width: 100%;" TextProperty="CardNr" ValueProperty="CardId" Name="CardId"></RadzenDropDown>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Card #" Component="CardNr"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenTextBox Style="width: 100%;" Name="CardNr" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Expiry Date" Component="ExpiryDate"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenDatePicker Style="width: 100%;" Name="ExpiryDate" @bind-Value="order.ExpiryDate" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Cardholder" Component="CardHolder"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenTextBox Style="width: 100%;" Name="CardHolder" />
+                    </RadzenColumn>
+                </RadzenRow>
+                </RadzenStack>
+            </RadzenFieldset>
+            <RadzenFieldset Text="Contact Info">
+                <RadzenStack Gap="1rem">
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Name" Component="Name"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenTextBox Style="width: 100%;" Name="Name" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenTabs SelectedIndex="0">
+                    <Tabs>
+                        <RadzenTabsItem Text="Billing Address">
+                            <RadzenStack>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="Country" Component="Country"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenDropDown @bind-Value="order.Country" Placeholder="USA" Data="@countries" Style="width: 100%;" TextProperty="Name" ValueProperty="Id" Name="Country">
+                                        </RadzenDropDown>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="City" Component="City"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenTextBox Style="width: 100%;" Name="City" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="Address Line 1" Component="Address1" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenTextBox Style="width: 100%;" Name="Address1" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="Address Line 2" Component="Address2"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenTextBox Style="width: 100%;" Name="Address2" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="State / Province / Region" Component="State"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenTextBox Style="width: 100%;" Name="State" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenLabel Text="Zip / Postal Code" Component="Zip" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="6">
+                                        <RadzenTextBox Style="width: 100%;" Name="Zip" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Shipping Address">
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+                </RadzenStack>
+            </RadzenFieldset>
+            </RadzenStack>
+
+            <RadzenStack>
+            <RadzenFieldset Text="Store Info">
+                <RadzenStack Gap="1rem">
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Store #" Component="StoreId"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" Gap="0.5rem">
+                                <RadzenTextBox Placeholder="123" Style="width: 8rem;" Name="StoreId" />
+                                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="add_location" Text="Locate store"></RadzenButton>
+                            </RadzenStack>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Name" Component="Warehouse"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="The warehouse" Style="width: 100%;" Name="Warehouse" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Region" Component="Region"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="West" Style="width: 100%;" Name="Region" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6" Class="rz-text-align-md-end">
+                            <RadzenLabel Text="System" Component="System"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="US" Style="width: 100%;" Name="System" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenStack>
+            </RadzenFieldset>
+            <RadzenFieldset Text="POS Info">
+                <RadzenStack Gap="1rem">
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Trans #" Component="TransId"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="S4485" Style="width: 100%;" Name="TransId" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Register" Component="Register"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="Register #4" Style="width: 100%;" Name="Register" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Clerk" Component="Clerk"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenTextBox Disabled="true" Placeholder="Jane Doe" Style="width: 100%;" Name="Clerk" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Order Date" Component="OrderDate"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenDatePicker Style="width: 100%;" Name="OrderDate" @bind-Value="order.OrderDate" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenLabel Text="Ship Date" Component="ShipDate"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenDatePicker Style="width: 100%;" Name="ShipDate" @bind-Value="order.ShipDate" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeSM="4" SizeMD="6">
+                            <RadzenLabel Text="Amount" Component="Amount" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeSM="4" SizeMD="6">
+                            <RadzenNumeric Placeholder="300" Style="width: 100%;" Name="Amount" @bind-Value="order.Amount" />
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeSM="4" SizeMD="6" Class="rz-text-align-md-end">
+                            <RadzenLabel Text="Tax" Component="Tax"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeSM="4" SizeMD="6">
+                            <RadzenNumeric Placeholder="123" Style="width: 100%;" Name="Tax" @bind-Value="order.Tax" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenStack>
+            </RadzenFieldset>
+            <RadzenText TextStyle="TextStyle.H3" TagName="TagName.H3" class="rz-pt-4">
+                DataGrid
+            </RadzenText>
+            <RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.P" class="rz-pb-4">
+                Display tabular data with ease. Perform paging, sorting and filtering through Entity Framework without extra code.
+            </RadzenText>
+
+                    <h3>Default Empty Text</h3>
+                    <RadzenDataGrid Data="@data">
+                        <Columns>
+                            <RadzenDataGridColumn Property="EmployeeID" Title="ID" Width="50px" TextAlign="TextAlign.Center" />
+                            <RadzenDataGridColumn Property="FirstName" Title="First Name" />
+                            <RadzenDataGridColumn Property="LastName" Title="Last Name" />
+                            <RadzenDataGridColumn Property="Title" Title="Title" />
+                            <RadzenDataGridColumn Property="TitleOfCourtesy" Title="Title Of Courtesy" />
+                            <RadzenDataGridColumn Property="BirthDate" Title="Birth Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="Address" Title="Address" />
+                        </Columns>
+                    </RadzenDataGrid>
+
+                    <h3 class="mt-4">Custom Empty Text</h3>
+                    <div class="mb-4">
+                        Custom text: <RadzenTextBox @bind-Value="emptyText" class="ml-2" Style="width: 300px;" aria-label="custom text" />
+                    </div>
+                    <RadzenDataGrid Data="@data" EmptyText="@emptyText">
+                        <Columns>
+                            <RadzenDataGridColumn Property="EmployeeID" Title="ID" Width="50px" TextAlign="TextAlign.Center" />
+                            <RadzenDataGridColumn Property="FirstName" Title="First Name" />
+                            <RadzenDataGridColumn Property="LastName" Title="Last Name" />
+                            <RadzenDataGridColumn Property="Title" Title="Title" />
+                            <RadzenDataGridColumn Property="TitleOfCourtesy" Title="Title Of Courtesy" />
+                            <RadzenDataGridColumn Property="BirthDate" Title="Birth Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="Address" Title="Address" />
+                        </Columns>
+                    </RadzenDataGrid>
+
+                    <h3 class="mt-4">Render Fragment as Empty Text</h3>
+                    <RadzenDataGrid Data="@data">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Property="EmployeeID" Title="ID" Width="50px" TextAlign="TextAlign.Center" />
+                            <RadzenDataGridColumn Property="FirstName" Title="First Name" />
+                            <RadzenDataGridColumn Property="LastName" Title="Last Name" />
+                            <RadzenDataGridColumn Property="Title" Title="Title" />
+                            <RadzenDataGridColumn Property="TitleOfCourtesy" Title="Title Of Courtesy" />
+                            <RadzenDataGridColumn Property="BirthDate" Title="Birth Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+                            <RadzenDataGridColumn Property="Address" Title="Address" />
+                        </Columns>
+                    </RadzenDataGrid>
+
+            <div class="rz-data-grid rz-datatable rz-datatable-scrollable" style="width: 100%;">
+                <div class="rz-data-grid-data">
+                    <table class="rz-grid-table">
+                        <thead>
+                            <tr>
+                                <th style="padding: var(--rz-grid-cell-padding)">Press this key</th>
+                                <th style="padding: var(--rz-grid-cell-padding)">To do this</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Tab" /></span></td>
+                                <td><span class="rz-cell-data">Navigate to a DataGrid.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Down Arrow" /></span></td>
+                                <td><span class="rz-cell-data">Focus next DataGrid item.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Up Arrow" /></span></td>
+                                <td><span class="rz-cell-data">Focus previous DataGrid item.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Enter" /> or <RadzenBadge Text="Space" /></span></td>
+                                <td><span class="rz-cell-data">Select the focused DataGrid item.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Shift" /> + <RadzenBadge Text="Enter" /> or <RadzenBadge Text="Space" /></span></td>
+                                <td><span class="rz-cell-data">Select/deselect multiple DataGrid items.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Left Arrow" /> when header row is focused</span></td>
+                                <td><span class="rz-cell-data">Focus previous DataGrid header cell.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Right Arrow" /> when header row is focused</span></td>
+                                <td><span class="rz-cell-data">Focus next DataGrid header cell.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Enter" /> on focused header cell</span></td>
+                                <td><span class="rz-cell-data">Sort DataGrid by focused header cell column.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Alt" /> + <RadzenBadge Text="Down arrow" /> on focused header cell</span></td>
+                                <td><span class="rz-cell-data">Open DataGrid column filter popup.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Tab" /> in an opened DataGrid column filter popup.</span></td>
+                                <td><span class="rz-cell-data">Navigate forward across available filter options.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Shift" /> + <RadzenBadge Text="Tab" /> in an opened DataGrid column filter popup.</span></td>
+                                <td><span class="rz-cell-data">Navigate backward across available filter options.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Esc" /> in an opened DataGrid column filter popup</span></td>
+                                <td><span class="rz-cell-data">Close the DataGrid column filter popup.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Tab" /></span></td>
+                                <td><span class="rz-cell-data">Navigate to a DataGrid pager.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Left Arrow" /> on focused pager</span></td>
+                                <td><span class="rz-cell-data">Focus previous DataGrid pager page.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Right Arrow" /> on focused pager</span></td>
+                                <td><span class="rz-cell-data">Focus next DataGrid pager page.</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rz-cell-data"><RadzenBadge Text="Enter" /> or <RadzenBadge Text="Space" /> on focused pager</span></td>
+                                <td><span class="rz-cell-data">Go to the focused DataGrid pager page.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+        Filled Buttons
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            These are the default Radzen Buttons.
+        </RadzenText>
+        <ButtonFilled />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Flat Buttons
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use <code>Variant="Variant.Flat"</code> for flat button variant.
+        </RadzenText>
+            <ButtonFlat />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Outlined Buttons
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use <code>Variant="Variant.Outlined"</code> for outlined button variant.
+        </RadzenText>
+            <ButtonOutlined />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Text Buttons
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use <code>Variant="Variant.Text"</code> for text button variant.
+        </RadzenText>
+            <ButtonText />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Content in Buttons
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Text, icons and images can be added to a button. 
+        </RadzenText>
+            <ButtonContent />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Button Sizes
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use the <code>Size</code> property to set button size. Available sizes are ExtraSmall, Small, Medium (default), and Large.
+        </RadzenText>
+            <ButtonSizes />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            FAB
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Floating action button.
+        </RadzenText>
+            <ButtonFab />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Disabled Button
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use <code>Disabled="true"</code> to disable a button.
+        </RadzenText>
+            <ButtonDisabled />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Busy button
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            Use <code>IsBusy="true"</code> to show the busy indicator.
+        </RadzenText>
+            <ButtonBusy />
+        <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" class="rz-pt-12">
+            Keyboard Navigation
+        </RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1" class="rz-mb-8">
+            The following keys or key combinations provide a way for users to navigate and interact with Radzen Blazor Button component.
+        </RadzenText>
+
+        <div class="rz-data-grid rz-datatable rz-datatable-scrollable" style="width: 100%;">
+            <div class="rz-data-grid-data">
+                <table class="rz-grid-table">
+                    <thead>
+                        <tr>
+                            <th style="padding: var(--rz-grid-cell-padding)">Press this key</th>
+                            <th style="padding: var(--rz-grid-cell-padding)">To do this</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="rz-cell-data"><RadzenBadge Text="Tab" /></span></td>
+                            <td><span class="rz-cell-data">Navigate to a button.</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rz-cell-data"><RadzenBadge Text="Enter" /></span></td>
+                            <td><span class="rz-cell-data">Click the focused button.</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rz-cell-data"><RadzenBadge Text="Space" /></span></td>
+                            <td><span class="rz-cell-data">Click the focused button.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+               
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Save" />
+        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Large" Icon="cancel" Text="Cancel" Click="@Cancel" />
+    </RadzenStack>
+    </RadzenTemplateForm>}
+
+@code {
+
+    private List<Employee> data;
+    private string emptyText = "test";
+
+    protected override void OnInitialized()
+    {
+        data = GetEmployees();
+    }
+
+    public List<Employee> GetEmployees()
+    {
+        return new List<Employee>
+        {
+            new Employee { EmployeeID = 1, FirstName = "Alice", LastName = "Johnson", Title = "Manager", TitleOfCourtesy = "Ms.", BirthDate = new DateTime(1985, 9, 1), HireDate = new DateTime(2010, 5, 11), Address = "1234 North Street", Photo = "https://example.com/photos/alice.jpg" },
+            new Employee { EmployeeID = 2, FirstName = "Bob", LastName = "Smith", Title = "Developer", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1990, 4, 12), HireDate = new DateTime(2012, 3, 23), Address = "5678 South Avenue", Photo = "https://example.com/photos/bob.jpg" },
+            new Employee { EmployeeID = 3, FirstName = "Carol", LastName = "Turner", Title = "Designer", TitleOfCourtesy = "Mrs.", BirthDate = new DateTime(1987, 11, 23), HireDate = new DateTime(2013, 8, 15), Address = "91011 East Boulevard", Photo = "https://example.com/photos/carol.jpg" },
+            new Employee { EmployeeID = 4, FirstName = "David", LastName = "Wilson", Title = "Engineer", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1992, 5, 14), HireDate = new DateTime(2015, 6, 1), Address = "1213 West Lane", Photo = "https://example.com/photos/david.jpg" },
+            new Employee { EmployeeID = 5, FirstName = "Emma", LastName = "Moore", Title = "HR Coordinator", TitleOfCourtesy = "Ms.", BirthDate = new DateTime(1988, 3, 30), HireDate = new DateTime(2014, 12, 20), Address = "1415 North Park", Photo = "https://example.com/photos/emma.jpg" },
+            new Employee { EmployeeID = 6, FirstName = "Frank", LastName = "Taylor", Title = "Security", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1979, 2, 28), HireDate = new DateTime(2000, 5, 25), Address = "1617 South Garden", Photo = "https://example.com/photos/frank.jpg" },
+            new Employee { EmployeeID = 7, FirstName = "Gloria", LastName = "Adams", Title = "Lead Developer", TitleOfCourtesy = "Mrs.", BirthDate = new DateTime(1991, 8, 19), HireDate = new DateTime(2016, 7, 30), Address = "1819 East Plaza", Photo = "https://example.com/photos/gloria.jpg" },
+            new Employee { EmployeeID = 8, FirstName = "Harry", LastName = "Clark", Title = "Analyst", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1990, 1, 5), HireDate = new DateTime(2012, 9, 10), Address = "2021 West Street", Photo = "https://example.com/photos/harry.jpg" },
+            new Employee { EmployeeID = 9, FirstName = "Irene", LastName = "Nelson", Title = "Sales Representative", TitleOfCourtesy = "Ms.", BirthDate = new DateTime(1986, 4, 21), HireDate = new DateTime(2011, 2, 13), Address = "2223 North Avenue", Photo = "https://example.com/photos/irene.jpg" },
+            new Employee { EmployeeID = 10, FirstName = "Jerry", LastName = "Mitchell", Title = "Marketing Manager", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1983, 7, 16), HireDate = new DateTime(2009, 10, 8), Address = "2425 South Way", Photo = "https://example.com/photos/jerry.jpg" },
+            new Employee { EmployeeID = 11, FirstName = "Karen", LastName = "Scott", Title = "Product Manager", TitleOfCourtesy = "Ms.", BirthDate = new DateTime(1994, 6, 25), HireDate = new DateTime(2018, 4, 18), Address = "2627 East Road", Photo = "https://example.com/photos/karen.jpg" },
+            new Employee { EmployeeID = 12, FirstName = "Leo", LastName = "Baker", Title = "Operations Manager", TitleOfCourtesy = "Mr.", BirthDate = new DateTime(1985, 10, 9), HireDate = new DateTime(2010, 11, 20), Address = "2829 West Boulevard", Photo = "https://example.com/photos/leo.jpg" }
+        };
+    }
+
+
+    public class Order
+    {
+        public int CardId { get; set; }
+        public string CardNr { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string CardHolder { get; set; }
+        public string Name { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public int Country { get; set; }
+        public int StoreId { get; set; }
+        public string Warehouse { get; set; }
+        public string Region { get; set; }
+        public string System { get; set; }
+        public int TransId { get; set; }
+        public string Register { get; set; }
+        public string Clerk { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Tax { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime ShipDate { get; set; }
+    }
+
+    public class CreditCard
+    {
+        public int CardId { get; set; }
+        public string CardNr { get; set; }
+    }
+
+    public class Country
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    Order order = new Order()
+    {
+        ExpiryDate = DateTime.Parse("10/10/2022"),
+        OrderDate = DateTime.Now,
+        ShipDate = DateTime.Now
+    };
+
+    List<CreditCard> cards = new List<CreditCard>()
+{
+        new CreditCard() { CardId = 1, CardNr = "5555555555554444" },
+        new CreditCard() { CardId = 2, CardNr = "4012888888881881" }
+    };
+
+    List<Country> countries = new List<Country>()
+{
+        new Country() { Id = 1, Name = "USA" },
+        new Country() { Id = 2, Name = "Germany" }
+    };
+
+    void Submit(Order arg)
+    {
+        //
+    }
+
+    void Cancel()
+    {
+        //
+    }
+}

@@ -1,0 +1,141 @@
+@using System.IO
+@using Radzen.Blazor
+@using RadzenPaletteMaker
+@implements IDisposable
+@inject ExampleService ExampleService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<PageTitle>@ExampleService.TitleFor(example)</PageTitle>
+<HeadContent>
+    <meta name="description" content="@ExampleService.DescriptionFor(example)">
+    <meta name="author" content="Radzen">
+    <meta property="og:title" content="@ExampleService.TitleFor(example)" />
+    <meta property="og:description" content="@ExampleService.DescriptionFor(example)" />
+    <meta property="og:site_name" content="Radzen Blazor Components">
+    <meta property="og:image" content="https://blazor.radzen.com/images/radzen-og.png" />
+    <meta property="twitter:card" content="summary_large_image" />
+</HeadContent>
+@if (Heading)
+{
+    <RadzenText TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
+        @Name
+    </RadzenText>
+    <RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.P" class="rz-pb-4">
+        Demonstration and configuration of the Radzen Blazor <strong>@Name</strong> component.
+    </RadzenText>
+}
+<div class="documentation-links">
+@if (Documentation)
+{
+    <a target="blank" href="@DocumentationHref" title=@($"Open {Name} documentation in new tab") ><RadzenIcon Icon="launch" style="font-size: 1rem; margin-right: 4px;" /> @Name Docs</a>
+}
+@if (Heading)
+{
+    <a target="blank" href="@ComponentSourceHref" title=@($"View {Name} source code in new tab") ><RadzenIcon Icon="launch" style="font-size: 1rem; margin-right: 4px;" /> @Name Source</a>
+}
+</div>
+<RadzenCard class="rz-p-0 rz-material-3-demo-card">
+    <RadzenTabs @bind-SelectedIndex="@selectedIndex" class="example-tabs">
+        <Tabs>
+            <RadzenTabsItem Text="Example" Title="Example preview">
+                @(dynamicContent ?? ChildContent)
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Edit Source" Title="View and edit example source code">
+            </RadzenTabsItem>
+            @foreach (var p in AdditionalSourceCodePages)
+            {
+            <RadzenTabsItem Text="@Path.GetFileName(p)" Icon="code">
+                <div class="source-tab-item rz-pb-2">
+                    <CodeViewer PageName="@p" ReadOnly="true" />
+                </div>
+            </RadzenTabsItem>
+            }
+        </Tabs>
+    </RadzenTabs>
+</RadzenCard>
+
+@code {
+
+    private int selectedIndex = 0;
+}
+
+@code {
+
+    private RenderFragment dynamicContent;
+}
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string ComponentName { get; set; }
+
+    [Parameter]
+    public string Source { get; set; }
+
+    [Parameter]
+    public string Example { get; set; }
+
+    [Parameter]
+    public string DocumentationLink { get; set; }
+
+    [Parameter]
+    public bool Heading { get; set; } = false;
+
+    [Parameter]
+    public bool Documentation { get; set; } = false;
+
+    string DocumentationHref => Documentation ? DocumentationLink ?? $"/docs/guides/components/{Name?.ToLower()}.html" : "";
+
+    string ComponentSourceHref => Source ?? $"https://github.com/radzenhq/radzen-blazor/blob/master/Radzen.Blazor/Radzen{Name}.razor.cs";
+
+    [Parameter]
+    public IEnumerable<string> AdditionalSourceCodePages { get; set; } = Enumerable.Empty<string>();
+
+    private string ExampleUrl => string.IsNullOrEmpty(Example) ? $"{Name}Page.razor" : $"{Example}.razor";
+
+    Example example;
+
+    DateTime start;
+
+    string source ;
+
+    protected override void OnInitialized()
+    {
+        start = DateTime.Now;
+
+        example = ExampleService.FindCurrent(NavigationManager.ToAbsoluteUri(NavigationManager.Uri));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("eval", $"console.log('Page {Name} render time is {(DateTime.Now - start).TotalMilliseconds} ms')");
+        }
+    }
+
+    void OnCompiled(Type type)
+    {
+        dynamicContent = builder =>
+        {
+            builder.OpenComponent(0, type);
+            builder.CloseComponent();
+        };
+
+        selectedIndex = 0;
+    }
+
+    public void Dispose()
+    {
+        GC.Collect();
+    }
+}
