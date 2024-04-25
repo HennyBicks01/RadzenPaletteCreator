@@ -8,22 +8,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="~/" />
-
-
-
-
-
-
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/radzenCss/software.css">
+    <link id="theme-css" rel="stylesheet" href="~/css/radzenCss/default.css">
     <link href="css/site.css" rel="stylesheet" />
-
-    
-    
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
-    <ThemeSwitcher />
+
     @RenderBody()
 
     <div id="blazor-error-ui">

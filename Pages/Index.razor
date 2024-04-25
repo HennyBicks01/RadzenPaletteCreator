@@ -5,9 +5,16 @@
 @using RadzenPaletteMaker.Models
 @inject IJSRuntime JSRuntime
 
-<RadzenText Style="padding-left: 30px" TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
-    Radzen Palette Demo
-</RadzenText>
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <RadzenText Style="padding-left: 30px; flex-grow: 1;" TextStyle="TextStyle.H2" TagName="TagName.H1" class="rz-pt-8">
+        Radzen Palette Creator
+    </RadzenText>
+
+    <div style="margin-right: 30px;">
+        <ThemeSwitcher />
+    </div>
+</div>
+
 
 <div style="display: flex; flex-wrap: wrap; align-items: flex-start; padding-left: 30px;">
     <div style="margin-right: 20px;">
@@ -66,6 +73,6 @@
         JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-lighter", lighter);
         JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-dark", dark);
         JSRuntime.InvokeVoidAsync("updateCssVariable", cssBaseKey + "-darker", darker);
-        JSRuntime.InvokeVoidAsync("updateCssVariable", "--rz-on-" + baseKey + "-lighter", baseColor);
+        //JSRuntime.InvokeVoidAsync("updateCssVariable", "--rz-on-" + baseKey + "-lighter", baseColor);
     }
 }

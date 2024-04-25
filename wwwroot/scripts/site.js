@@ -8,3 +8,4 @@ function changeTheme(newThemePath) {
         link.href = newThemePath;
     }
 }
+

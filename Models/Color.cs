@@ -14,16 +14,16 @@
         public void ComputeShades()
         {
             // Assuming Base500 is in the middle, compute other shades
-            Shades["--rz-base-50"] = ColorHelper.LightenColor(Base500, 0.8);
-            Shades["--rz-base-100"] = ColorHelper.LightenColor(Base500, 0.6);
-            Shades["--rz-base-200"] = ColorHelper.LightenColor(Base500, 0.4);
-            Shades["--rz-base-300"] = ColorHelper.LightenColor(Base500, 0.3);
+            Shades["--rz-base-50"] = ColorHelper.LightenColor(Base500, 0.9);
+            Shades["--rz-base-100"] = ColorHelper.LightenColor(Base500, 0.8);
+            Shades["--rz-base-200"] = ColorHelper.LightenColor(Base500, 0.6);
+            Shades["--rz-base-300"] = ColorHelper.LightenColor(Base500, 0.4);
             Shades["--rz-base-400"] = ColorHelper.LightenColor(Base500, 0.2);
             Shades["--rz-base-500"] = Base500;
             Shades["--rz-base-600"] = ColorHelper.DarkenColor(Base500, 0.2);
-            Shades["--rz-base-700"] = ColorHelper.DarkenColor(Base500, 0.3);
-            Shades["--rz-base-800"] = ColorHelper.DarkenColor(Base500, 0.4);
-            Shades["--rz-base-900"] = ColorHelper.DarkenColor(Base500, 0.6);
+            Shades["--rz-base-700"] = ColorHelper.DarkenColor(Base500, 0.4);
+            Shades["--rz-base-800"] = ColorHelper.DarkenColor(Base500, 0.6);
+            Shades["--rz-base-900"] = ColorHelper.DarkenColor(Base500, 0.8);
         }
     }
 
