@@ -82,8 +82,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    These lines ensure that Bootstrap, which is required by Radzen, is loaded, along with the default theme for Radzen located in the 'css' folder. You can change '"~/css/radzenCss/default.css"' to another theme file if desired.
 
 5. **Setup Override (Optional)**
-   If you are using an override:
-   - Add another line after the Radzen CSS to integrate your custom theme.
+   If you are using an Override, add another line after the Radzen CSS to integrate your custom theme.
 
    ```html
    <link rel="stylesheet" href="~/css/theme.css">
