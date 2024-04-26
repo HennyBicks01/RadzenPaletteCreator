@@ -40,7 +40,7 @@ async function fetchAndModifyCSS(filePath, colorVariants, themeName) {
             }
         });
 
-        downloadModifiedCSS(`${themeName.replace(/\s+/g, '-').toLowerCase()}-theme.css`, css);
+        downloadModifiedCSS(`${themeName.replace(/\s+/g, '-').toLowerCase()}.css`, css);
     } catch (error) {
         console.error('Error fetching or modifying CSS:', error);
     }
