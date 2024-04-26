@@ -79,9 +79,10 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    
    Once downloaded, unzip the folder and:
    - Drag the `css` folder to your `wwwroot`.
-   - Move the `ThemeSwitcher.razor` to your `Pages` folder.
-   - Place the `Theme.cs` in your `Models` folder.
-   - Place the `theme.js` in your `wwwroot`.
+   - And if youd like to have more than one theme
+      - Move the `ThemeSwitcher.razor` to your `Pages` folder.
+      - Place the `Theme.cs` in your `Models` folder.
+      - Place the `theme.js` in your `wwwroot`.
 
 3. **Correct the Namespace**
    
@@ -113,7 +114,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
 
 6. **Setup Override (Override)**
 
-   If you are using an Override, add another line after the Radzen CSS to integrate your custom theme.
+   If you are using an Override instead of the custom CSS, add another line after the Radzen CSS to integrate your custom Override.
 
    ```html
    <link rel="stylesheet" href="~/css/theme.css">
@@ -150,7 +151,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
 
 8. **Importing Custom CSS (CSS)**
 
-   If you have custom CSS files that you need to integrate, simply drag and drop them into the `wwwroot/css/radzenCss` directory. If asked to overwrite existing files, confirm the action to update the CSS files. This will allow you to use your custom styles in your application.
+   If you have chosen the custom CSS files over the Override, simply drag and drop them from your downloads folder into the `wwwroot/css/radzenCss` directory. If asked to overwrite existing files, confirm the action to update the CSS files to your new custom css files. This will allow you to use your custom palettes in your application.
 
 9. **Create a ThemeSwitcher Element**
 
