@@ -23,7 +23,6 @@
             }
         </div>
 
-
         <div style="flex-grow: 1;"></div>
 
         <div style="display: flex; flex-wrap: wrap; align-items: flex-end; padding: 20px">
@@ -64,7 +63,7 @@
 
 @code {
     private string currentThemePath;
-    private bool allowGradients;
+    private bool KBPWST = true;
     private bool firstRender = true;
 
     private string GetHeaderBackgroundColor()
@@ -77,8 +76,8 @@
         if (firstRender)
         {
             currentThemePath = "css/radzenCss/default.css";
-            //ApplyInitialColorSettings();
-            this.firstRender = false; // Ensure this initialization runs only once
+            if (KBPWST) ApplyInitialColorSettings();
+            firstRender = false;
         }
     }
 
@@ -148,7 +147,7 @@
     {
         var cssBaseKey = $"--rz-{baseKey}";
         var light = ColorHelper.LightenColor(baseColor, 0.3);
-        var lighter = ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f);
+        var lighter = ColorHelper.LightenColor(baseColor, 0.85/* , true, 0.8f */);
         var dark = ColorHelper.DarkenColor(baseColor, 0.2);
         var darker = ColorHelper.DarkenColor(baseColor, 0.4);
 
@@ -185,7 +184,7 @@
         {
             { "base", baseColor },
             { "light", ColorHelper.LightenColor(baseColor, 0.3) },
-            { "lighter", ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f) },
+            { "lighter", ColorHelper.LightenColor(baseColor, 0.85/* , true, 0.8f */) },
             { "dark", ColorHelper.DarkenColor(baseColor, 0.2) },
             { "darker", ColorHelper.DarkenColor(baseColor, 0.4) }
         };
@@ -215,7 +214,7 @@
             var baseColor = color.Value.BaseColor;
             sb.AppendLine($"    --rz-{baseKey}: {baseColor};");
             sb.AppendLine($"    --rz-{baseKey}-light: {ColorHelper.LightenColor(baseColor, 0.3)};");
-            sb.AppendLine($"    --rz-{baseKey}-lighter: {ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f)};");
+            sb.AppendLine($"    --rz-{baseKey}-lighter: {ColorHelper.LightenColor(baseColor, 0.85/* , true, 0.8f */)};");
             sb.AppendLine($"    --rz-{baseKey}-dark: {ColorHelper.DarkenColor(baseColor, 0.2)};");
             sb.AppendLine($"    --rz-{baseKey}-darker: {ColorHelper.DarkenColor(baseColor, 0.4)};");
         }
