@@ -1,4 +1,4 @@
-# Radzen Palette Maker
+# Radzen Palette Creator
 
 ## Overview
 Radzen Palette Maker is an innovative web-based tool designed for dynamic customization of UI color themes. It leverages the power of Blazor and CSS to offer a real-time, interactive platform where users can create, modify, and apply color themes across their applications. This tool is ideal for developers and designers aiming to craft distinct visual identities or ensure accessibility in their web projects.
@@ -16,12 +16,12 @@ Radzen Palette Maker is an innovative web-based tool designed for dynamic custom
 Clone the repository to your local machine using:
 
 ```bash
-git clone https://github.com/yourusername/RadzenPaletteMaker.git
+git clone https://github.com/yourusername/Radzen-Palette-Creator.git
 ```
 Navigate into the project directory:
 
 ```bash
-cd RadzenPaletteMaker
+cd Radzen-Palette-Creator
 ```
 Run the application using your preferred Blazor supported environment or deploy it to a web server to start customizing your themes.
 
