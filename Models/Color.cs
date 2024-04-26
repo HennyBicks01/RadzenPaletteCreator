@@ -3,6 +3,7 @@
     public class ThemeColor
     {
         public string BaseColor { get; set; }
+        public string GradientColor { get; set; }
         public string Description { get; set; }
     }
 

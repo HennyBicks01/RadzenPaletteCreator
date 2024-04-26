@@ -6,43 +6,47 @@
 @inject IJSRuntime JSRuntime
 
 
-<RadzenHeader Style="@($"position: sticky; background-color: {GetHeaderBackgroundColor()}; box-shadow: 0 4px 8px rgba(0,0,0,0.1);")">
+<RadzenHeader Style="position: sticky; background-color: #110F18; color: #EBE9EE; box-shadow: 0 8px 12px rgba(0,0,0,0.3);">
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start; padding: 20px">
             <div style="margin-right: 20px;">
-                <RadzenText Text="Base" Style="margin-bottom: 5px;" />
+                <RadzenText Text="Base" Style="margin-bottom: 5px; color: #EBE9EE;" />
                 <RadzenColorPicker @bind-Value="baseColorTheme.Base500" ShowHSV="true" ShowRGBA="true" ShowColors="false" Change="ApplyBaseColorChanges" />
             </div>
             @foreach (var key in themeColors.Keys)
             {
                 <div style="margin-right: 20px;">
-                    <RadzenText Text="@themeColors[key].Description" Style="margin-bottom: 5px;" />
+                    <RadzenText Text="@themeColors[key].Description" Style="margin-bottom: 5px; color: #EBE9EE;" />
                     <RadzenColorPicker @bind-Value="@themeColors[key].BaseColor" ShowHSV="true" ShowRGBA="true" Change="() => UpdateColors(key)" />
                 </div>
+
             }
         </div>
 
+
+        <div style="flex-grow: 1;"></div>
+
         <div style="display: flex; flex-wrap: wrap; align-items: flex-end; padding: 20px">
             <div style="flex-basis: 100%;">
-                <RadzenText Text="Choose theme:" />
+                <RadzenText Text="Choose theme:" Style="color: #EBE9EE;" />
             </div>
             <div style="flex-grow: 1; display: flex; flex-direction: column;">
                 <RadzenDropDown Data="@themes" TextProperty="Name" ValueProperty="StylePath"
                                 Value="@currentThemePath"
-                                Change="@(args => OnChangeTheme((string)args))" Style="width: auto; margin-left: 10px;" TValue="string" />
+                                Change="@(args => OnChangeTheme((string)args))" Style="width: auto; color:#110F18; background-color: #fff " TValue="string" />
             </div>
         </div>
         <div style="display: flex; flex-wrap: wrap; align-items: flex-end; padding: 20px">
 
             <div style="flex-basis: 100%;">
-                <RadzenText Text="Download" />
+                <RadzenText Text="Download" Style="color: #EBE9EE;" />
             </div>
             <div style="flex-grow: 1; display: flex; flex-direction: column;">
-                <RadzenButton Text="CSS" Click="@DownloadModifiedCSS" />
+                <RadzenButton Text="CSS" Click="@DownloadModifiedCSS" Style="color: #EBE9EE;" />
             </div>
             <div style="flex-grow: 1; display: flex; flex-direction: column;">
 
-                <RadzenButton Text="Override" Click="@DownloadCSS" />
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Override" Click="@DownloadCSS" Style="color: #EBE9EE;" />
             </div>
             
         </div>
@@ -59,8 +63,8 @@
 <TemplateFormConfig />
 
 @code {
-    private string currentThemePath = "css/radzenCss/default.css";
-
+    private string currentThemePath;
+    private bool allowGradients;
     private bool firstRender = true;
 
     private string GetHeaderBackgroundColor()
@@ -72,7 +76,8 @@
     {
         if (firstRender)
         {
-            ApplyInitialColorSettings();
+            currentThemePath = "css/radzenCss/default.css";
+            //ApplyInitialColorSettings();
             this.firstRender = false; // Ensure this initialization runs only once
         }
     }
@@ -108,6 +113,8 @@
     private async Task OnChangeTheme(string value)
     {
         await JSRuntime.InvokeVoidAsync("changeTheme", value);
+        currentThemePath = value;
+
     }
 
     BaseColorTheme baseColorTheme = new BaseColorTheme { Base500 = "#9e9e9e" };
@@ -159,6 +166,36 @@
         JSRuntime.InvokeVoidAsync("downloadFile", "theme.css", cssContent);
     }
 
+    Dictionary<string, object> PrepareColorDictionary()
+    {
+        var colorVariants = new Dictionary<string, object>();
+
+        // Include base color shades directly
+        foreach (var shade in baseColorTheme.Shades)
+        {
+            colorVariants[shade.Key] = shade.Value;
+        }
+
+        // Include theme colors with their variants
+        foreach (var color in themeColors)
+        {
+            var baseKey = color.Key;
+            var baseColor = color.Value.BaseColor;
+            var variants = new Dictionary<string, string>
+        {
+            { "base", baseColor },
+            { "light", ColorHelper.LightenColor(baseColor, 0.3) },
+            { "lighter", ColorHelper.LightenColor(baseColor, 0.5, true, 0.12f) },
+            { "dark", ColorHelper.DarkenColor(baseColor, 0.2) },
+            { "darker", ColorHelper.DarkenColor(baseColor, 0.4) }
+        };
+            colorVariants[baseKey] = variants;
+        }
+
+        return colorVariants;
+    }
+
+
     string GenerateCSS()
     {
         // This method returns a string containing the CSS rules generated from your color settings
@@ -168,7 +205,7 @@
         // Adding base color shades
         foreach (var shade in baseColorTheme.Shades)
         {
-            sb.AppendLine($"    --rz-base-{shade.Key.ToLower()}: {shade.Value};");
+            sb.AppendLine($"    {shade.Key.ToLower()}: {shade.Value};");
         }
 
         // Adding specific theme colors with shades
@@ -190,7 +227,9 @@
     // Method to download the modified CSS file
     private async Task DownloadModifiedCSS()
     {
+        var colorVariants = PrepareColorDictionary();
         var themeName = themes.FirstOrDefault(t => t.StylePath == currentThemePath)?.Name ?? "default";
-        await JSRuntime.InvokeVoidAsync("fetchAndModifyCSS", currentThemePath, themeColors, themeName);
+        await JSRuntime.InvokeVoidAsync("fetchAndModifyCSS", currentThemePath, colorVariants, themeName);
     }
+
 }
