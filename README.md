@@ -90,7 +90,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    ```
    These lines ensure that Bootstrap, which is required by Radzen, is loaded, along with the default theme for Radzen located in the 'css' folder. You can change '"~/css/radzenCss/default.css"' to another theme file if      desired.
 
-   Additionally if you want to include a Theme Switcher item add
+   Additionally if you want to include a Theme Switcher item later make sure to add
 
    ```html
    <script src="theme.js"></script>
@@ -98,6 +98,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    to where you call your scripts
 
 6. **Setup Override (Override)**
+
    If you are using an Override, add another line after the Radzen CSS to integrate your custom theme.
 
    ```html
@@ -106,6 +107,7 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    By placing this after the Radzen CSS, you will effectively override the palette of any theme you choose to use.
 
 7. **Modify Default Theme and Manage Themes (Optional)**
+
    To change the default theme or manage available themes, navigate to `ThemeSwitcher.razor` and locate the following code:
 
    ```csharp
@@ -133,9 +135,11 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
    Additionally, to change the default theme, update the `currentThemePath` string to point to a different CSS file.
 
 8. **Importing Custom CSS (CSS)**
+
    If you have custom CSS files that you need to integrate, simply drag and drop them into the `wwwroot/css/radzenCss` directory. If asked to overwrite existing files, confirm the action to update the CSS files. This will allow you to use your custom styles in your application.
 
 9. **Create a ThemeSwitcher Element**
+
    To integrate the theme switching functionality into any part of your Blazor application, simply add the `ThemeSwitcher` component into your Razor page. Place the following tag where you want the theme switcher to appear:
 
    ```razor
