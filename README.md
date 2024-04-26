@@ -30,27 +30,44 @@ Run the application using your preferred Blazor supported environment or deploy 
 Follow these simple steps to customize and apply color themes using Radzen Palette Maker:
 
 1. **Launch the Application**
-   
-   Begin by launching Radzen Palette Maker. You'll be greeted with a user-friendly interface designed to facilitate easy navigation and interaction.
 
-   ![Launch Application](url-to-image-here)  <!-- Replace 'url-to-image-here' with the actual URL of your image -->
+   Begin by launching Radzen Palette Maker. You'll be greeted with a user-friendly interface designed to make creating palettes simpler.
+
+   <p align="center">
+     <img src="Photos/photo1.png" alt="Launch Application"> <!-- Adjust the file name as necessary -->
+   </p>
 
 3. **Start Creating Your Palette**
-   
+
+   Start by making sure you've chosen the theme that you want by using the theme drop down.
+
+   <p align="center">
+     <img src="Photos/photo2.png" alt="Choose Theme"> <!-- Adjust the file name as necessary -->
+   </p>
+
    Use the provided tools and color pickers to start creating your desired color palette. Adjust colors and see the effects in real-time on the interface.
 
-   ![Create Palette](url-to-image-here)  <!-- Replace 'url-to-image-here' with the actual URL of your image -->
+   <p align="center">
+     <img src="Photos/photo3.png" alt="Create Palette"> <!-- Adjust the file name as necessary -->
+   </p>
 
-4. **Choose a Download Format: CSS or Override**
-   
+5. **Choose a Download Format: CSS or Override**
+
    - **CSS**: Select this option if you want to download a new version of the specific theme you're working on. This allows for maintaining varied palettes across different themes within your projects.
    - **Override**: Choose this option to apply your new palette across all themes you download. This ensures a consistent color scheme throughout your application, regardless of the theme.
 
-     ![Download](url-to-image-here)  <!-- Replace 'url-to-image-here' with the actual URL of your image -->
+     <p align="center">
+       <img src="Photos/photo4.png" alt="Download"> <!-- Adjust the file name as necessary -->
+     </p>
 
-5. **Click Download**
-   
-   Once you've finalized your palette and chosen your download format, click the 'Download' button to obtain your customized CSS. Congratulations, you now have a tailor-made theme ready to integrate into your project!
+6. **Click Download**
+
+   Once you've finalized your palette and chosen your download format, click the 'Download' button of your choice to obtain your customized CSS or Override. Congratulations, you now have a tailor-made theme ready to integrate into your project!
+
+   <p align="center">
+     <img src="Photos/photo5.png" alt="Download"> <!-- Adjust the file name as necessary -->
+   </p>
+
 
 ## Integration
 
