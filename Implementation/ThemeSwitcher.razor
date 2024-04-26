@@ -1,0 +1,36 @@
+﻿@inject IJSRuntime JS
+@using Microsoft.JSInterop
+@using YourNamespace.Models
+
+
+<RadzenText Text="Choose theme:" />
+<RadzenDropDown Data="@themes" TextProperty="Name" ValueProperty="StylePath"
+                Value="@currentThemePath" 
+                Change="@(args => OnChangeTheme((string)args))" Style="width: auto;" TValue="string" />
+
+
+@code {
+    private string currentThemePath = "css/radzenCss/default.css";
+
+    private List<ThemeOption> themes = new List<ThemeOption>
+    {
+        new ThemeOption { Name = "Default", StylePath = "css/radzenCss/default.css" },
+        new ThemeOption { Name = "Dark", StylePath = "css/radzenCss/dark.css" },
+        new ThemeOption { Name = "Fluent", StylePath = "css/radzenCss/fluent.css" },
+        new ThemeOption { Name = "Fluent Dark", StylePath = "css/radzenCss/fluent-dark.css" },
+        new ThemeOption { Name = "Humanistic", StylePath = "css/radzenCss/humanistic.css" },
+        new ThemeOption { Name = "Material", StylePath = "css/radzenCss/material.css" },
+        new ThemeOption { Name = "Material Dark", StylePath = "css/radzenCss/material-dark.css" },
+        new ThemeOption { Name = "Material3", StylePath = "css/radzenCss/material3.css" },
+        new ThemeOption { Name = "Material3 Dark", StylePath = "css/radzenCss/material3-dark.css" },
+        new ThemeOption { Name = "Software", StylePath = "css/radzenCss/software.css" },
+        new ThemeOption { Name = "Standard", StylePath = "css/radzenCss/standard.css" },
+        // Add more themes as needed
+    };
+
+    private async Task OnChangeTheme(string value)
+    {
+        await JS.InvokeVoidAsync("changeTheme", value);
+    }
+}
+
