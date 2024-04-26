@@ -16,12 +16,12 @@ Radzen Palette Maker is an innovative web-based tool designed for dynamic custom
 Clone the repository to your local machine using:
 
 ```bash
-git clone https://github.com/yourusername/Radzen-Palette-Creator.git
+git clone https://github.com/yourusername/RadzenPaletteCreator.git
 ```
 Navigate into the project directory:
 
 ```bash
-cd Radzen-Palette-Creator
+cd RadzenPaletteCreator
 ```
 Run the application using your preferred Blazor supported environment or deploy it to a web server to start customizing your themes.
 
