@@ -69,7 +69,7 @@ Follow these simple steps to customize and apply color themes using Radzen Palet
    </p>
 
 
-## Integration
+## How to Implement
 
 To integrate the themes you've created with Radzen Palette Maker into your Blazor applications, follow these steps:
 
