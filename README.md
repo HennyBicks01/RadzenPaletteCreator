@@ -165,7 +165,11 @@ To integrate the themes you've created with Radzen Palette Maker into your Blazo
 ### Congratulations!
 Congratulations on successfully integrating and customizing your themes with Radzen Palette Maker! Enjoy crafting unique and dynamic themes for your applications. Feel free to explore further customizations and extend the functionality as needed.
 
-   
+## Contributing
+Contributions to the Radzen Palette Maker are welcome! Please feel free to fork the repository, make your changes, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
    
 
